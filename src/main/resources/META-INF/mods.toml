@@ -1,0 +1,10 @@
+modLoader="javafml"
+loaderVersion="[36,)"
+license="MIT"
+
+[[mods]]
+    modId="i18nupdatemod"
+    version="${file.jarVersion}"
+    displayName="I18n update Mod"
+    authors="TartaricAcid"
+    description="自动汉化更新模组"
