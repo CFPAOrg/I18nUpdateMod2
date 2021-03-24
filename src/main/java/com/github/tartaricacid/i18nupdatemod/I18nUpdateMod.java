@@ -38,7 +38,6 @@ public class I18nUpdateMod {
                 long nowTime = System.currentTimeMillis();
                 if (TimeUnit.MILLISECONDS.toDays(nowTime - fileTime) < MAX_INTERVAL_DAYS) {
                     Minecraft.getInstance().getResourcePackRepository().addPackFinder(new LanguagePackFinder());
-                    return;
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -49,7 +48,6 @@ public class I18nUpdateMod {
                 Minecraft.getInstance().getResourcePackRepository().addPackFinder(new LanguagePackFinder());
             } catch (IOException e) {
                 e.printStackTrace();
-                return;
             }
         }
     }

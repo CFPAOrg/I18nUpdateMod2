@@ -13,7 +13,7 @@ apply plugin: 'maven-publish'
 
 version = '2.0.0'
 group = 'com.github.tartaricacid'
-archivesBaseName = 'i18nupdatemod2'
+archivesBaseName = 'i18nupdatemod-1.16.5'
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(8)
 println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
