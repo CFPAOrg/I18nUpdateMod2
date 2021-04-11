@@ -3,6 +3,8 @@ package com.github.tartaricacid.i18nupdatemod;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.fml.common.Mod;
 import org.apache.commons.io.FileUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.net.URL;
@@ -18,6 +20,7 @@ public class I18nUpdateMod {
     public final static Path LANGUAGE_PACK = CACHE_DIR.resolve("Minecraft-Mod-Language-Modpack-1-16.zip");
     public final static String LINK = "http://downloader1.meitangdehulu.com:22943/Minecraft-Mod-Language-Modpack-1-16.zip";
     public final static long MAX_INTERVAL_DAYS = 7;
+    public static final Logger LOGGER = LogManager.getLogger(MOD_ID);
 
     public I18nUpdateMod() {
         Minecraft.getInstance().options.languageCode = "zh_cn";
@@ -45,8 +48,12 @@ public class I18nUpdateMod {
         } else {
             try {
                 FileUtils.copyURLToFile(new URL(LINK), LANGUAGE_PACK.toFile());
-                Minecraft.getInstance().getResourcePackRepository().addPackFinder(new LanguagePackFinder());
             } catch (IOException e) {
+                e.printStackTrace();
+            }
+            try {
+                Minecraft.getInstance().getResourcePackRepository().addPackFinder(new LanguagePackFinder());
+            }catch (Exception e){
                 e.printStackTrace();
             }
         }
