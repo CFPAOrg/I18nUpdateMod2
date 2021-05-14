@@ -64,6 +64,7 @@ repositories {
 dependencies {
     minecraft 'net.minecraftforge:forge:1.16.5-36.1.0'
     implementation fg.deobf("vazkii.patchouli:Patchouli:1.16.4-51-SNAPSHOT")
+    annotationProcessor('org.spongepowered:mixin:0.8.2')
 }
 
 jar {
