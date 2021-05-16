@@ -25,6 +25,9 @@ archivesBaseName = 'i18nupdatemod-1.16.5'
 java.toolchain.languageVersion = JavaLanguageVersion.of(8)
 println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
 
+mixin {
+    disableAnnotationProcessorCheck = true
+}
 minecraft {
     mappings channel: 'official', version: '1.16.5'
     runs {
@@ -65,6 +68,7 @@ dependencies {
     minecraft 'net.minecraftforge:forge:1.16.5-36.1.0'
     implementation fg.deobf("vazkii.patchouli:Patchouli:1.16.4-51-SNAPSHOT")
     annotationProcessor('org.spongepowered:mixin:0.8.2')
+    annotationProcessor('org.spongepowered:mixin:0.8.2:processor')
 }
 
 jar {
