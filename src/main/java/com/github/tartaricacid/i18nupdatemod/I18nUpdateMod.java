@@ -11,6 +11,7 @@ import org.apache.logging.log4j.Logger;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigInteger;
 import java.net.URL;
 import java.nio.file.Files;
@@ -24,8 +25,8 @@ import java.util.List;
 @Mod(I18nUpdateMod.MOD_ID)
 public class I18nUpdateMod {
     public final static String MOD_ID = "i18nupdatemod";
-    public final static Path CACHE_DIR = Paths.get(System.getProperty("user.home"), "."+MOD_ID, "1.16.5");
-    public final static Path RESOURCE_FOLDER = Paths.get(Minecraft.getInstance().gameDirectory.getPath(),"resourcepacks");
+    public final static Path CACHE_DIR = Paths.get(System.getProperty("user.home"), "." + MOD_ID, "1.16.5");
+    public final static Path RESOURCE_FOLDER = Paths.get(Minecraft.getInstance().gameDirectory.getPath(), "resourcepacks");
     public final static Path LOCAL_LANGUAGE_PACK = RESOURCE_FOLDER.resolve("Minecraft-Mod-Language-Modpack-1-16.zip");
     public final static Path LANGUAGE_PACK = CACHE_DIR.resolve("Minecraft-Mod-Language-Modpack-1-16.zip");
     public final static Path LANGUAGE_MD5 = CACHE_DIR.resolve("1.16.md5");
@@ -34,6 +35,7 @@ public class I18nUpdateMod {
     public final static long MAX_INTERVAL_DAYS = 7;
     public static final Logger LOGGER = LogManager.getLogger(MOD_ID);
     public static String MD5String = "";
+
     public I18nUpdateMod() {
         Minecraft.getInstance().options.languageCode = "zh_cn";
 
@@ -58,7 +60,8 @@ public class I18nUpdateMod {
         }
 
         //尝试加载MD5文件
-        if (Files.exists(LANGUAGE_MD5)){
+        try {
+            FileUtils.copyURLToFile(new URL(MD5), LANGUAGE_MD5.toFile());
             StringBuilder stringBuffer = new StringBuilder();
             try {
                 List<String> lines = Files.readAllLines(LANGUAGE_MD5);
@@ -67,50 +70,71 @@ public class I18nUpdateMod {
                 }
             } catch (IOException e) {
                 e.printStackTrace();
+                return;
             }
             MD5String = stringBuffer.toString();
-        }else {
+        } catch (IOException e) {
+            e.printStackTrace();
+            return;
+        }
+
+
+        if (Files.exists(LANGUAGE_PACK)) {
             try {
-                FileUtils.copyURLToFile(new URL(MD5),LANGUAGE_MD5.toFile());
-                StringBuilder stringBuffer = new StringBuilder();
-                try {
-                    List<String> lines = Files.readAllLines(LANGUAGE_MD5);
-                    for (String line : lines) {
-                        stringBuffer.append(line);
+                InputStream is = Files.newInputStream(LANGUAGE_PACK);
+                String md5 = org.apache.commons.codec.digest.DigestUtils.md5Hex(is).toUpperCase();
+                if (!md5.equals(MD5String)) {
+                    FileUtils.copyURLToFile(new URL(LINK), LANGUAGE_PACK.toFile());
+                    if (md5.equals(MD5String)){
+                        Files.delete(LOCAL_LANGUAGE_PACK);
+                        Files.copy(LANGUAGE_PACK, LOCAL_LANGUAGE_PACK);
+                    }else {
+                        LOGGER.error("Langpack[i18num] was broken.");
                     }
-                } catch (IOException e) {
-                    e.printStackTrace();
                 }
-                MD5String = stringBuffer.toString();
-            }catch (IOException e){
+                setResourcesRepository();
+            } catch (IOException e) {
+                e.printStackTrace();
+                return;
+            }
+        } else {
+            try {
+                FileUtils.copyURLToFile(new URL(LINK), LANGUAGE_PACK.toFile());
+                Files.copy(LANGUAGE_PACK, LOCAL_LANGUAGE_PACK);
+            } catch (IOException e) {
+                e.printStackTrace();
+                return;
+            }
+            try {
+                setResourcesRepository();
+                //Minecraft.getInstance().getResourcePackRepository().addPackFinder(new LanguagePackFinder());
+            } catch (Exception e) {
                 e.printStackTrace();
                 return;
             }
         }
 
-        if (Files.exists(LANGUAGE_PACK)) {
+        if(!Files.exists(LOCAL_LANGUAGE_PACK)){
             try {
-                String md5 = getMD5(LANGUAGE_PACK.toString());
-                if (!md5.equals(MD5String)) {
-                    FileUtils.copyURLToFile(new URL(LINK), LANGUAGE_PACK.toFile());
-                    Files.copy(LANGUAGE_PACK,LOCAL_LANGUAGE_PACK);
+                Files.copy(LANGUAGE_PACK, LOCAL_LANGUAGE_PACK);
+                InputStream is1 = Files.newInputStream(LOCAL_LANGUAGE_PACK);
+                InputStream is2 = Files.newInputStream(LANGUAGE_PACK);
+                String md51 = org.apache.commons.codec.digest.DigestUtils.md5Hex(is1).toUpperCase();
+                String md52 = org.apache.commons.codec.digest.DigestUtils.md5Hex(is2).toUpperCase();
+                if (!md51.equals(md52)){
+                    Files.delete(LOCAL_LANGUAGE_PACK);
+                    Files.copy(LANGUAGE_PACK, LOCAL_LANGUAGE_PACK);
                 }
-                setResourcesRepository();
             } catch (IOException e) {
                 e.printStackTrace();
-            }
-        } else {
-            try {
-                FileUtils.copyURLToFile(new URL(LINK), LANGUAGE_PACK.toFile());
-                Files.copy(LANGUAGE_PACK,LOCAL_LANGUAGE_PACK);
-            } catch (IOException e) {
-                e.printStackTrace();
+                return;
             }
             try {
                 setResourcesRepository();
                 //Minecraft.getInstance().getResourcePackRepository().addPackFinder(new LanguagePackFinder());
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
+                return;
             }
         }
     }
@@ -131,6 +155,7 @@ public class I18nUpdateMod {
             bi = new BigInteger(1, b);
         } catch (NoSuchAlgorithmException | IOException e) {
             e.printStackTrace();
+            return "";
         }
         return bi.toString(16);
     }
@@ -140,15 +165,15 @@ public class I18nUpdateMod {
         GameSettings gameSettings = mc.options;
         // 在gameSetting中加载资源包
         if (!gameSettings.resourcePacks.contains("Minecraft-Mod-Language-Modpack-1-16.zip")) {
-                mc.options.resourcePacks.add("Minecraft-Mod-Language-Modpack-1-16.zip");
-            } else {
-                List<String> packs = new ArrayList<>(10);
-                packs.add("Minecraft-Mod-Language-Modpack-1-16.zip"); // 资源包的 index 越小优先级越低(在资源包 gui 中置于更低层)
-                packs.addAll(gameSettings.resourcePacks);
-                gameSettings.resourcePacks = packs;
-            }
-        reloadResources();
+            mc.options.resourcePacks.add("Minecraft-Mod-Language-Modpack-1-16.zip");
+        } else {
+            List<String> packs = new ArrayList<>(10);
+            packs.add("Minecraft-Mod-Language-Modpack-1-16.zip"); // 资源包的 index 越小优先级越低(在资源包 gui 中置于更低层)
+            packs.addAll(gameSettings.resourcePacks);
+            gameSettings.resourcePacks = packs;
         }
+        reloadResources();
+    }
 
     public static void reloadResources() {
         Minecraft mc = Minecraft.getInstance();
