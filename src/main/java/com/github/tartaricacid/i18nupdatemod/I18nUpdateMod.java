@@ -13,6 +13,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigInteger;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -62,17 +63,18 @@ public class I18nUpdateMod {
         //尝试加载MD5文件
         try {
             FileUtils.copyURLToFile(new URL(MD5), LANGUAGE_MD5.toFile());
+        } catch (IOException e) {
+            e.printStackTrace();
+            LOGGER.error("Download MD5 failed.");
+            return;
+        }
+        try {
             StringBuilder stringBuffer = new StringBuilder();
-            try {
-                List<String> lines = Files.readAllLines(LANGUAGE_MD5);
-                for (String line : lines) {
-                    stringBuffer.append(line);
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-                return;
+            List<String> lines = Files.readAllLines(LANGUAGE_MD5);
+            for (String line : lines) {
+                stringBuffer.append(line);
+                MD5String = stringBuffer.toString();
             }
-            MD5String = stringBuffer.toString();
         } catch (IOException e) {
             e.printStackTrace();
             return;
@@ -80,28 +82,37 @@ public class I18nUpdateMod {
 
 
         if (Files.exists(LANGUAGE_PACK)) {
+            String md5;
             try {
                 InputStream is = Files.newInputStream(LANGUAGE_PACK);
-                String md5 = org.apache.commons.codec.digest.DigestUtils.md5Hex(is).toUpperCase();
+                md5 = org.apache.commons.codec.digest.DigestUtils.md5Hex(is).toUpperCase();
+            } catch (IOException e) {
+                e.printStackTrace();
+                LOGGER.error("Error when compute md5.");
+                return;
+            }
+            try {
                 if (!md5.equals(MD5String)) {
                     FileUtils.copyURLToFile(new URL(LINK), LANGUAGE_PACK.toFile());
-                    if (md5.equals(MD5String)){
-                        Files.delete(LOCAL_LANGUAGE_PACK);
-                        Files.copy(LANGUAGE_PACK, LOCAL_LANGUAGE_PACK);
-                    }else {
-                        LOGGER.error("Langpack[i18num] was broken.");
-                    }
+                    Files.delete(LOCAL_LANGUAGE_PACK);
+                    Files.copy(LANGUAGE_PACK, LOCAL_LANGUAGE_PACK);
                 }
-                setResourcesRepository();
+            } catch (MalformedURLException e) {
+                LOGGER.error("Download Langpack failed.");
+                e.printStackTrace();
+                return;
             } catch (IOException e) {
+                LOGGER.error("Error when copy file.");
                 e.printStackTrace();
                 return;
             }
+            setResourcesRepository();
         } else {
             try {
                 FileUtils.copyURLToFile(new URL(LINK), LANGUAGE_PACK.toFile());
                 Files.copy(LANGUAGE_PACK, LOCAL_LANGUAGE_PACK);
             } catch (IOException e) {
+                LOGGER.error("Download Langpack failed.");
                 e.printStackTrace();
                 return;
             }
@@ -117,16 +128,17 @@ public class I18nUpdateMod {
         if(!Files.exists(LOCAL_LANGUAGE_PACK)){
             try {
                 Files.copy(LANGUAGE_PACK, LOCAL_LANGUAGE_PACK);
-                InputStream is1 = Files.newInputStream(LOCAL_LANGUAGE_PACK);
-                InputStream is2 = Files.newInputStream(LANGUAGE_PACK);
-                String md51 = org.apache.commons.codec.digest.DigestUtils.md5Hex(is1).toUpperCase();
-                String md52 = org.apache.commons.codec.digest.DigestUtils.md5Hex(is2).toUpperCase();
-                if (!md51.equals(md52)){
-                    Files.delete(LOCAL_LANGUAGE_PACK);
-                    Files.copy(LANGUAGE_PACK, LOCAL_LANGUAGE_PACK);
-                }
+                //InputStream is1 = Files.newInputStream(LOCAL_LANGUAGE_PACK);
+                //InputStream is2 = Files.newInputStream(LANGUAGE_PACK);
+                //String md51 = org.apache.commons.codec.digest.DigestUtils.md5Hex(is1).toUpperCase();
+                //String md52 = org.apache.commons.codec.digest.DigestUtils.md5Hex(is2).toUpperCase();
+                //if (!md51.equals(md52)){
+                    //Files.delete(LOCAL_LANGUAGE_PACK);
+                    //Files.copy(LANGUAGE_PACK, LOCAL_LANGUAGE_PACK);
+                //}
             } catch (IOException e) {
                 e.printStackTrace();
+                LOGGER.error("Error when copy file.");
                 return;
             }
             try {
