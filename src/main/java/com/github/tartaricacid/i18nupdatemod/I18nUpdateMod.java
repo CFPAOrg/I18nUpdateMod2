@@ -181,7 +181,7 @@ public class I18nUpdateMod {
         if (!gameSettings.resourcePacks.contains("Minecraft-Mod-Language-Modpack-1-16.zip")) {
             mc.options.resourcePacks.add("Minecraft-Mod-Language-Modpack-1-16.zip");
         } else {
-            List<String> packs = new ArrayList<>(100);
+            List<String> packs = new ArrayList<>(10);
             packs.add("Minecraft-Mod-Language-Modpack-1-16.zip"); // 资源包的 index 越小优先级越低(在资源包 gui 中置于更低层)
             packs.addAll(gameSettings.resourcePacks);
             gameSettings.resourcePacks = packs;
