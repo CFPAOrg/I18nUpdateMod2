@@ -94,7 +94,9 @@ public class I18nUpdateMod {
             try {
                 if (!md5.equals(MD5String)) {
                     FileUtils.copyURLToFile(new URL(LINK), LANGUAGE_PACK.toFile());
-                    Files.delete(LOCAL_LANGUAGE_PACK);
+                    if(Files.exists(LOCAL_LANGUAGE_PACK)){
+                        Files.delete(LOCAL_LANGUAGE_PACK);
+                    }
                     Files.copy(LANGUAGE_PACK, LOCAL_LANGUAGE_PACK);
                 }
             } catch (MalformedURLException e) {
