@@ -108,20 +108,12 @@ public class I18nUpdateMod {
                 e.printStackTrace();
                 return;
             }
-            setResourcesRepository();
         } else {
             try {
                 FileUtils.copyURLToFile(new URL(LINK), LANGUAGE_PACK.toFile());
                 Files.copy(LANGUAGE_PACK, LOCAL_LANGUAGE_PACK);
             } catch (IOException e) {
                 LOGGER.error("Download Langpack failed.");
-                e.printStackTrace();
-                return;
-            }
-            try {
-                setResourcesRepository();
-                //Minecraft.getInstance().getResourcePackRepository().addPackFinder(new LanguagePackFinder());
-            } catch (Exception e) {
                 e.printStackTrace();
                 return;
             }
@@ -143,6 +135,9 @@ public class I18nUpdateMod {
                 LOGGER.error("Error when copy file.");
                 return;
             }
+        }
+        
+        if(Files.exists(LOCAL_LANGUAGE_PACK)){
             try {
                 setResourcesRepository();
                 //Minecraft.getInstance().getResourcePackRepository().addPackFinder(new LanguagePackFinder());
