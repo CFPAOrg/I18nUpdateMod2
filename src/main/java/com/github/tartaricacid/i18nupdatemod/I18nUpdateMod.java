@@ -139,6 +139,19 @@ public class I18nUpdateMod {
         
         if(Files.exists(LOCAL_LANGUAGE_PACK)){
             try {
+                String md5;
+                try {
+                    InputStream is = Files.newInputStream(LOCAL_LANGUAGE_PACK);
+                    md5 = org.apache.commons.codec.digest.DigestUtils.md5Hex(is).toUpperCase();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    LOGGER.error("Error when compute md5.");
+                    return;
+                }
+                if (!md5.equals(MD5String)) {
+                    Files.delete(LOCAL_LANGUAGE_PACK);
+                    Files.copy(LANGUAGE_PACK, LOCAL_LANGUAGE_PACK);
+                }
                 setResourcesRepository();
                 //Minecraft.getInstance().getResourcePackRepository().addPackFinder(new LanguagePackFinder());
             } catch (Exception e) {
