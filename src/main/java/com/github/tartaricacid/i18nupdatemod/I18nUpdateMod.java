@@ -66,6 +66,7 @@ public class I18nUpdateMod {
         } catch (IOException e) {
             e.printStackTrace();
             LOGGER.error("Download MD5 failed.");
+            setResourcesRepository();
             return;
         }
         try {
@@ -77,6 +78,7 @@ public class I18nUpdateMod {
             }
         } catch (IOException e) {
             e.printStackTrace();
+            setResourcesRepository();
             return;
         }
 
@@ -89,21 +91,32 @@ public class I18nUpdateMod {
             } catch (IOException e) {
                 e.printStackTrace();
                 LOGGER.error("Error when compute md5.");
+                setResourcesRepository();
                 return;
             }
             try {
                 if (!md5.equals(MD5String)) {
                     FileUtils.copyURLToFile(new URL(LINK), LANGUAGE_PACK.toFile());
-                    Files.delete(LOCAL_LANGUAGE_PACK);
+                    InputStream is = Files.newInputStream(LANGUAGE_PACK);
+                    md5 = org.apache.commons.codec.digest.DigestUtils.md5Hex(is).toUpperCase();
+                    if (!md5.equals(MD5String)){
+                        setResourcesRepository();
+                        return;
+                    }
+                    if(Files.exists(LOCAL_LANGUAGE_PACK)){
+                        Files.delete(LOCAL_LANGUAGE_PACK);
+                    }
                     Files.copy(LANGUAGE_PACK, LOCAL_LANGUAGE_PACK);
                 }
             } catch (MalformedURLException e) {
                 LOGGER.error("Download Langpack failed.");
                 e.printStackTrace();
+                setResourcesRepository();
                 return;
             } catch (IOException e) {
                 LOGGER.error("Error when copy file.");
                 e.printStackTrace();
+                setResourcesRepository();
                 return;
             }
             setResourcesRepository();
