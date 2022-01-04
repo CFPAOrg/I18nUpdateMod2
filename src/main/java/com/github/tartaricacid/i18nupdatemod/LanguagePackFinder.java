@@ -1,20 +1,20 @@
 package com.github.tartaricacid.i18nupdatemod;
 
-import net.minecraft.resources.FilePack;
-import net.minecraft.resources.IPackFinder;
-import net.minecraft.resources.IPackNameDecorator;
-import net.minecraft.resources.ResourcePackInfo;
+import net.minecraft.server.packs.FilePackResources;
+import net.minecraft.server.packs.repository.RepositorySource;
+import net.minecraft.server.packs.repository.PackSource;
+import net.minecraft.server.packs.repository.Pack;
 
 import java.util.function.Consumer;
 
 import static com.github.tartaricacid.i18nupdatemod.I18nUpdateMod.LANGUAGE_PACK;
 
-public class LanguagePackFinder implements IPackFinder {
+public class LanguagePackFinder implements RepositorySource {
     @Override
-    public void loadPacks(Consumer<ResourcePackInfo> consumer, ResourcePackInfo.IFactory iFactory) {
-        ResourcePackInfo packInfo = ResourcePackInfo.create("Minecraft-Mod-Language-Modpack-1-16.zip",
-                true, () -> new FilePack(LANGUAGE_PACK.toFile()),
-                iFactory, ResourcePackInfo.Priority.TOP, IPackNameDecorator.DEFAULT);
+    public void loadPacks(Consumer<Pack> consumer, Pack.PackConstructor iFactory) {
+        Pack packInfo = Pack.create("Minecraft-Mod-Language-Modpack-1-18.zip",
+                true, () -> new FilePackResources(LANGUAGE_PACK.toFile()),
+                iFactory, Pack.Position.TOP, PackSource.DEFAULT);
         if (packInfo != null) {
             consumer.accept(packInfo);
         }

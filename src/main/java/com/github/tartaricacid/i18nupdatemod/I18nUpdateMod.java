@@ -1,6 +1,7 @@
 package com.github.tartaricacid.i18nupdatemod;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.server.packs.repository.RepositorySource;
 import net.minecraftforge.fml.common.Mod;
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
@@ -25,7 +26,7 @@ public class I18nUpdateMod {
     public I18nUpdateMod() {
         Minecraft.getInstance().options.languageCode = "zh_cn";
 
-        // 妫�鏌ヨ祫婧愬寘鐩綍鏄惁瀛樺湪
+        // 检查资源包目录是否存在
         if (!Files.isDirectory(CACHE_DIR)) {
             try {
                 Files.createDirectories(CACHE_DIR);
@@ -40,7 +41,7 @@ public class I18nUpdateMod {
                 long fileTime = Files.getLastModifiedTime(LANGUAGE_PACK).toMillis();
                 long nowTime = System.currentTimeMillis();
                 if (TimeUnit.MILLISECONDS.toDays(nowTime - fileTime) < MAX_INTERVAL_DAYS) {
-                    Minecraft.getInstance().getResourcePackRepository().addPackFinder(new LanguagePackFinder());
+                    Minecraft.getInstance().getResourcePackRepository().addPackFinder((RepositorySource) new LanguagePackFinder());
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -52,7 +53,7 @@ public class I18nUpdateMod {
                 e.printStackTrace();
             }
             try {
-                Minecraft.getInstance().getResourcePackRepository().addPackFinder(new LanguagePackFinder());
+                Minecraft.getInstance().getResourcePackRepository().addPackFinder((RepositorySource) new LanguagePackFinder());
             }catch (Exception e){
                 e.printStackTrace();
             }

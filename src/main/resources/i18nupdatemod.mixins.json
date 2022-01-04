@@ -1,0 +1,11 @@
+{
+  "required": false,
+  "package": "com.github.tartaricacid.i18nupdatemod.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "client": [
+    "MixinBookContents"
+  ],
+  "target": "@env(DEFAULT)",
+  "setSourceFile": true,
+  "minVersion": "0.8"
+}
