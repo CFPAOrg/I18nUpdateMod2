@@ -53,7 +53,7 @@ public class I18nUpdateMod {
             }
             try {
                 Minecraft.getInstance().getResourcePackRepository().addPackFinder(new LanguagePackFinder());
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
