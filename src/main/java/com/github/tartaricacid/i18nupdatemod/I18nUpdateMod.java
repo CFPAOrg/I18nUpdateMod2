@@ -17,16 +17,16 @@ import java.util.concurrent.TimeUnit;
 @Mod(I18nUpdateMod.MOD_ID)
 public class I18nUpdateMod {
     public final static String MOD_ID = "i18nupdatemod";
-    public final static Path CACHE_DIR = Paths.get(System.getProperty("user.home"), MOD_ID, "1.16.5");
-    public final static Path LANGUAGE_PACK = CACHE_DIR.resolve("Minecraft-Mod-Language-Modpack-1-16.zip");
-    public final static String LINK = "http://downloader1.meitangdehulu.com:22943/Minecraft-Mod-Language-Modpack-1-16.zip";
+    public final static Path CACHE_DIR = Paths.get(System.getProperty("user.home"), MOD_ID, "1.18.1");
+    public final static Path LANGUAGE_PACK = CACHE_DIR.resolve("Minecraft-Mod-Language-Modpack-1-18.zip");
+    public final static String LINK = "http://downloader1.meitangdehulu.com:22943/Minecraft-Mod-Language-Modpack-1-18.zip";
     public final static long MAX_INTERVAL_DAYS = 7;
     public static final Logger LOGGER = LogManager.getLogger(MOD_ID);
 
     public I18nUpdateMod() {
         Minecraft.getInstance().options.languageCode = "zh_cn";
 
-        // 检查资源包目录是否存在
+        // 妫�鏌ヨ祫婧愬寘鐩綍鏄惁瀛樺湪
         if (!Files.isDirectory(CACHE_DIR)) {
             try {
                 Files.createDirectories(CACHE_DIR);

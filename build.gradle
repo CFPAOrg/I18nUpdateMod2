@@ -63,11 +63,11 @@ minecraft {
     }
 }
 
-mixin {
-    add sourceSets.main, "i18nupdatemod.refmap.json"
-
-    config "i18nupdatemod.mixins.json"
-}
+//mixin {
+//    add sourceSets.main, "i18nupdatemod.refmap.json"
+//
+//    config "i18nupdatemod.mixins.json"
+//}
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 repositories {
