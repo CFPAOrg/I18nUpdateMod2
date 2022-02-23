@@ -45,6 +45,6 @@ jobs:
           path: ./build/libs/*.jar
 
       - name: Cleanup Gradle Cache
-          run: |
-            rm -f ~/.gradle/caches/modules-2/modules-2.lock
-            rm -f ~/.gradle/caches/modules-2/gc.properties
+        run: |
+          rm -f ~/.gradle/caches/modules-2/modules-2.lock
+          rm -f ~/.gradle/caches/modules-2/gc.properties
