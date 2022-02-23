@@ -14,7 +14,6 @@ import net.minecraft.util.ResourceLocation;
 import vazkii.patchouli.client.book.BookContents;
 
 
-
 @Mixin(BookContents.class)
 public class MixinBookContents {
     @Inject(at = @At("HEAD"), method = "loadJson", cancellable = true, remap = false)
