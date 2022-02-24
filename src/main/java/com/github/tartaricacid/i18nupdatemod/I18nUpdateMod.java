@@ -1,8 +1,8 @@
 package com.github.tartaricacid.i18nupdatemod;
 
-import net.minecraft.client.GameSettings;
 import net.minecraft.client.Minecraft;
-import net.minecraft.resources.ResourcePackList;
+import net.minecraft.client.Options;
+import net.minecraft.server.packs.repository.PackRepository;
 import net.minecraftforge.fml.common.Mod;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FileUtils;
@@ -22,14 +22,14 @@ import java.util.List;
 @Mod(I18nUpdateMod.MOD_ID)
 public class I18nUpdateMod {
     public static final String MOD_ID = "i18nupdatemod";
-    public static final Path CACHE_DIR = Paths.get(System.getProperty("user.home"), "." + MOD_ID, "1.16.5");
+    public static final Path CACHE_DIR = Paths.get(System.getProperty("user.home"), "." + MOD_ID, "1.18");
     public static final Path RESOURCE_FOLDER = Paths.get(Minecraft.getInstance().gameDirectory.getPath(), "resourcepacks");
-    public static final String LANG_PACK_FILE_NAME = "Minecraft-Mod-Language-Modpack-1-16.zip";
+    public static final String LANG_PACK_FILE_NAME = "Minecraft-Mod-Language-Modpack-1-18.zip";
     public static final Path LOCAL_LANGUAGE_PACK = RESOURCE_FOLDER.resolve(LANG_PACK_FILE_NAME);
-    public static final Path LANGUAGE_PACK = CACHE_DIR.resolve("Minecraft-Mod-Language-Modpack-1-16.zip");
-    public static final Path LANGUAGE_MD5 = CACHE_DIR.resolve("1.16.md5");
-    public static final String LINK = "http://downloader1.meitangdehulu.com:22943/Minecraft-Mod-Language-Modpack-1-16.zip";
-    public static final String MD5 = "http://downloader1.meitangdehulu.com:22943/1.16.md5";
+    public static final Path LANGUAGE_PACK = CACHE_DIR.resolve("Minecraft-Mod-Language-Modpack-1-18.zip");
+    public static final Path LANGUAGE_MD5 = CACHE_DIR.resolve("1.18.md5");
+    public static final String LINK = "http://downloader1.meitangdehulu.com:22943/Minecraft-Mod-Language-Modpack-1-18.zip";
+    public static final String MD5 = "http://downloader1.meitangdehulu.com:22943/1.18.md5";
     public static final Logger LOGGER = LogManager.getLogger(MOD_ID);
     public static String MD5String = "";
 
@@ -163,7 +163,7 @@ public class I18nUpdateMod {
 
     public static void setResourcesRepository() {
         Minecraft mc = Minecraft.getInstance();
-        GameSettings gameSettings = mc.options;
+        Options gameSettings = mc.options;
         // 在 gameSetting 中加载资源包
         if (!gameSettings.resourcePacks.contains(LANG_PACK_FILE_NAME)) {
             mc.options.resourcePacks.add(LANG_PACK_FILE_NAME);
@@ -180,7 +180,7 @@ public class I18nUpdateMod {
     public static void reloadResources() {
         Minecraft mc = Minecraft.getInstance();
         // 因为这时候资源包已经加载了，所以需要重新读取，重新加载
-        ResourcePackList resourcePackRepository = mc.getResourcePackRepository();
+        PackRepository resourcePackRepository = mc.getResourcePackRepository();
         resourcePackRepository.reload();
     }
 }
