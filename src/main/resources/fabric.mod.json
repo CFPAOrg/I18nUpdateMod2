@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "id": "i18nupdatemod",
+  "version": "${version}",
+  "name": "I18n Update Mod",
+  "description": "自动汉化更新模组",
+  "authors": [
+    "TartaricAcid",
+    "baka-gourd",
+    "exzhawk"
+  ],
+  "contact": {
+    "homepage": "https://www.mcbbs.net/thread-805273-1-1.html",
+    "sources": "https://github.com/CFPAOrg/I18nUpdateMod2"
+  },
+  "license": "MIT",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "com.github.tartaricacid.i18nupdatemod.I18nUpdateMod"
+    ]
+  },
+  "mixins": [
+  ],
+  "depends": {
+    "fabricloader": ">=0.7.4",
+    "fabric": "*",
+    "minecraft": "1.16.x",
+    "fabric-key-binding-api-v1": "*"
+  }
+}
