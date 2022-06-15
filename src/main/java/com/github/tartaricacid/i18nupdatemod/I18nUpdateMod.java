@@ -17,6 +17,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 import java.util.List;
 
 @Mod(I18nUpdateMod.MOD_ID)
@@ -181,6 +182,9 @@ public class I18nUpdateMod {
         Minecraft mc = Minecraft.getInstance();
         // 因为这时候资源包已经加载了，所以需要重新读取，重新加载
         ResourcePackList resourcePackRepository = mc.getResourcePackRepository();
-        resourcePackRepository.reload();
+        try {
+            resourcePackRepository.reload();
+        } catch (ConcurrentModificationException ignore) {
+        }
     }
 }
