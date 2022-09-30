@@ -2,7 +2,6 @@ package com.github.tartaricacid.i18nupdatemod;
 
 import net.minecraft.client.GameSettings;
 import net.minecraft.client.Minecraft;
-import net.minecraft.resources.ResourcePackList;
 import net.minecraftforge.fml.common.Mod;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FileUtils;
@@ -17,7 +16,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.ConcurrentModificationException;
 import java.util.List;
 
 @Mod(I18nUpdateMod.MOD_ID)
@@ -175,16 +173,8 @@ public class I18nUpdateMod {
             packs.addAll(gameSettings.resourcePacks);
             gameSettings.resourcePacks = packs;
         }
-        reloadResources();
+        //我们并不需要在此重载资源包，因为构造mod时在加载mod资源包之前，之后minecraft会自己重载资源包。
+
     }
 
-    public static void reloadResources() {
-        Minecraft mc = Minecraft.getInstance();
-        // 因为这时候资源包已经加载了，所以需要重新读取，重新加载
-        ResourcePackList resourcePackRepository = mc.getResourcePackRepository();
-        try {
-            resourcePackRepository.reload();
-        } catch (ConcurrentModificationException ignore) {
-        }
-    }
 }
