@@ -9,7 +9,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '4.1.+', changing: true
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
         classpath group: 'org.spongepowered', name: 'mixingradle', version: '0.7-SNAPSHOT'
     }
 }
@@ -17,7 +17,7 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 apply plugin: 'org.spongepowered.mixin'
 
-version = '2.0.4'
+version = '2.0.5'
 group = 'com.github.tartaricacid'
 archivesBaseName = 'i18nupdatemod-1.16.5'
 
@@ -66,8 +66,8 @@ repositories {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.16.5-36.1.0'
-    implementation fg.deobf("vazkii.patchouli:Patchouli:1.16.4-51-SNAPSHOT")
+    minecraft 'net.minecraftforge:forge:1.16.5-36.2.34'
+    implementation fg.deobf("vazkii.patchouli:Patchouli:1.16.4-53.3")
     annotationProcessor('org.spongepowered:mixin:0.8.2')
     annotationProcessor('org.spongepowered:mixin:0.8.2:processor')
 }
@@ -79,7 +79,7 @@ jar {
                 "Specification-Vendor"    : "i18nupdatemod2sareus",
                 "Specification-Version"   : "1",
                 "Implementation-Title"    : project.name,
-                "Implementation-Version"  : "${version}",
+                "Implementation-Version"  : project.version,
                 "Implementation-Vendor"   : "i18nupdatemod2sareus",
                 "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
                 "MixinConfigs"            : "i18n.mixin.cfg.json"
