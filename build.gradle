@@ -35,6 +35,7 @@ minecraft {
             workingDirectory project.file('run')
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
+            arg "-mixin.config=i18n.mixin.cfg.json"
             mods {
                 i18nupdatemod2 {
                     source sourceSets.main
@@ -46,6 +47,7 @@ minecraft {
             workingDirectory project.file('run')
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
+            arg "-mixin.config=i18n.mixin.cfg.json"
             mods {
                 i18nupdatemod2 {
                     source sourceSets.main
@@ -79,7 +81,8 @@ jar {
                 "Implementation-Title"    : project.name,
                 "Implementation-Version"  : project.version,
                 "Implementation-Vendor"   : "i18nupdatemod2sareus",
-                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+                "MixinConfigs"            : "i18n.mixin.cfg.json"
         ])
     }
 }
