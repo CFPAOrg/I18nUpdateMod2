@@ -22,7 +22,7 @@ plugins {
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'org.spongepowered.mixin'
 
-version = '3.0.2'
+version = '3.0.3'
 group = 'com.github.tartaricacid'
 archivesBaseName = 'i18nupdatemod-1.18'
 
@@ -71,7 +71,7 @@ minecraft {
             // Please read: https://stackoverflow.com/questions/2031163/when-to-use-the-different-log-levels
             property 'forge.logging.console.level', 'debug'
 
-            // arg "-mixin.config=i18n.mixin.cfg.json"
+            arg "-mixin.config=i18n.mixin.cfg.json"
 
             mods {
                 i18nupdatemod2 {
@@ -87,7 +87,7 @@ minecraft {
 
             property 'forge.logging.console.level', 'debug'
 
-            // arg "-mixin.config=i18n.mixin.cfg.json"
+            arg "-mixin.config=i18n.mixin.cfg.json"
 
             mods {
                 i18nupdatemod2 {
@@ -190,8 +190,8 @@ jar {
                 "Implementation-Title"    : project.name,
                 "Implementation-Version"  : "${version}",
                 "Implementation-Vendor"   : "i18nupdatemod2sareus",
-                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
-                // "MixinConfigs"            : "i18n.mixin.cfg.json"
+                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+                "MixinConfigs"            : "i18n.mixin.cfg.json"
         ])
     }
 }
