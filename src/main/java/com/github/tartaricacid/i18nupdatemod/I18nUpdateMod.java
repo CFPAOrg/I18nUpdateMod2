@@ -94,12 +94,13 @@ public class I18nUpdateMod {
 
             try {
                 if (!md5.equals(MD5String)) {
-                    // TODO：阻塞式下载必不可少，但是否应该增加提示？
+                    LOGGER.info("Downloading I18N resource pack...");
                     FileUtils.copyURLToFile(new URL(LINK), LANGUAGE_PACK.toFile());
                     InputStream stream = Files.newInputStream(LANGUAGE_PACK);
                     md5 = DigestUtils.md5Hex(stream).toUpperCase();
                     // 说明有可能下载损坏，就不要复制后加载了
                     if (!md5.equals(MD5String)) {
+                        LOGGER.error("Error when compute md5.");
                         setResourcesRepository();
                         return;
                     }
