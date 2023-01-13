@@ -29,8 +29,8 @@ public class I18nUpdateMod {
     public static final Path LOCAL_LANGUAGE_PACK = RESOURCE_FOLDER.resolve(LANG_PACK_FILE_NAME);
     public static final Path LANGUAGE_PACK = CACHE_DIR.resolve("Minecraft-Mod-Language-Modpack-1-16.zip");
     public static final Path LANGUAGE_MD5 = CACHE_DIR.resolve("1.16.md5");
-    public static final String LINK = "http://downloader1.meitangdehulu.com:22943/Minecraft-Mod-Language-Modpack-1-16.zip";
-    public static final String MD5 = "http://downloader1.meitangdehulu.com:22943/1.16.md5";
+    public static final String LINK = "https://ghproxy.com/https://raw.githubusercontent.com/zkitefly/TranslationPackMirror/main/files/Minecraft-Mod-Language-Modpack-1-16.zip";
+    public static final String MD5 = "https://ghproxy.com/https://raw.githubusercontent.com/zkitefly/TranslationPackMirror/main/files/1.16.md5";
     public static final Logger LOGGER = LogManager.getLogger(MOD_ID);
     public static String MD5String = "";
 
